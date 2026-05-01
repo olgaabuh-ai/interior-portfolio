@@ -1,1 +1,10 @@
-@import "tailwindcss";
+@tailwind base;
+2@tailwind components;
+3@tailwind utilities;
+4
+5body {
+6  margin: 0;
+7  -webkit-font-smoothing: antialiased;
+8  -moz-osx-font-smoothing: grayscale;
+9  overflow-x: hidden;
+10}
