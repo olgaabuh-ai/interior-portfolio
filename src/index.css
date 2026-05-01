@@ -2,9 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  body {
-    @apply bg-[#0f172a] text-white antialiased;
-    font-family: 'Inter', sans-serif;
-  }
+@keyframes v-scroll { 
+  0% { transform: translateY(0); } 
+  100% { transform: translateY(-50%); } 
+}
+
+.animate-v-scroll { 
+  animation: v-scroll 40s linear infinite; 
+}
+
+.animate-v-scroll:hover { 
+  animation-play-state: paused; 
+}
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
