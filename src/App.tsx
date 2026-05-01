@@ -1,195 +1,115 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Volume2, VolumeX, ExternalLink, FileText, Download, X } from 'lucide-react';
+import { Volume2, VolumeX } from 'lucide-react';
+
+const YANDEX_METRICA_ID = "108995288"; 
 
 const translations = {
   RU: {
     nav: ['Концепция', 'Визуализация', 'Чертежи', 'Прайс', 'Контакты'],
-    heroTitleTop: 'ИНТЕРЬЕР',
-    heroTitleBottom: 'АТМОСФЕРА',
+    heroTitleTop: 'ИНТЕРЬЕР', heroTitleBottom: 'АТМОСФЕРА', heroSub: 'Архитектура интерьера и атмосфера',
     stats: [{ label: 'ПРОЕКТОВ', value: '50+' }, { label: 'ГОДА ОПЫТА', value: '3+' }],
-    philosophy: 'СОВРЕМЕННАЯ ПЛАТФОРМА ДИЗАЙНА, ОБЪЕДИНЯЮЩАЯ ИНЖЕНЕРНУЮ ТОЧНОСТЬ И ЭСТЕТИКУ ВЫСОКОГО КЛАССА.',
-    portfolioTitle: 'ПОРТФОЛИО',
-    portfolioDesc: 'Бесконечная лента наших последних проектов. Наведите, чтобы остановить.',
-    explore: 'Смотреть проект',
-    pricingTitle: 'ТАРИФЫ',
-    pricingPlans: [
-      { name: 'МИНИ', price: '600 ₽/м²', features: ['Обмерный план', '3 варианта планировки', 'План монтажа/демонтажа'] },
-      { name: 'СТАНДАРТ', price: '1 800 ₽/м²', features: ['Концепция', 'Подбор материалов', 'Основные чертежи (5+ листов)'] },
-      { name: 'МАКСИ', price: '2 500 ₽/м²', features: ['Полный пакет чертежей', '3D визуализации', 'Спецификации оборудования'] }
-    ],
-    whyUs: 'ОБО МНЕ',
-    contactBtn: 'Связаться с дизайнером'
+    contactBtn: 'СВЯЗАТЬСЯ С ДИЗАЙНЕРОМ', portfolioTitle: 'ПОРТФОЛИО',
+    aboutTitle: 'ОБО МНЕ', aboutText: 'Я — ОЛЬГА АБУ ХЕЙБА, ПРОФЕССИОНАЛЬНЫЙ ДИЗАЙНЕР ИНТЕРЬЕРОВ. МОЯ РАБОТА — ЭТО СОЗДАНИЕ АТМОСФЕРЫ.'
   },
   EN: {
-    nav: ['Concept', 'Visualization', 'Blueprints', 'Price', 'Contact'],
-    heroTitleTop: 'INTERIOR',
-    heroTitleBottom: 'ATMOSPHERE',
+    nav: ['Concept', 'Visualization', 'Technical', 'Price', 'Contact'],
+    heroTitleTop: 'INTERIOR', heroTitleBottom: 'ATMOSPHERE', heroSub: 'Interior Architecture & Atmosphere',
     stats: [{ label: 'Projects', value: '50+' }, { label: 'Years Exp.', value: '3+' }],
-    philosophy: 'A MODERN DESIGN PLATFORM INCORPORATING ADVANCED TECHNICAL TOOLS AND ELITE AESTHETIC EXPERTISE.',
-    portfolioTitle: 'PORTFOLIO',
-    portfolioDesc: 'Infinite scroll of our projects. Hover to pause.',
-    explore: 'Explore Project',
-    pricingTitle: 'PRICING',
-    pricingPlans: [
-      { name: 'MINI', price: '$10/m²', features: ['Measurements', '3 Layout solutions', 'Plans'] },
-      { name: 'STANDARD', price: '$30/m²', features: ['Concept', 'Materials', 'Key technical plans'] },
-      { name: 'MAXI', price: '$45/m²', features: ['Full package', '3D visualizations', 'Specifications'] }
-    ],
-    whyUs: 'ABOUT ME',
-    contactBtn: 'Contact Designer'
+    contactBtn: 'CONTACT DESIGNER', portfolioTitle: 'PORTFOLIO',
+    aboutTitle: 'ABOUT ME', aboutText: 'I AM OLGA ABU HAIBEH, A PROFESSIONAL DESIGNER. MY WORK IS CREATING ATMOSPHERE.'
   }
 };
 
-const PROJECTS = [
-  {
-    id: 'event-in-wine',
-    titleRU: 'Событие в вине',
-    titleEN: 'Event in Wine',
-    image: "https://storage.googleapis.com/producer-app-public/producer/96d16483-a0bc-45e5-b62c-ef61e2a50f5b",
-    images: ["https://storage.googleapis.com/producer-app-public/producer/96d16483-a0bc-45e5-b62c-ef61e2a50f5b", "https://storage.googleapis.com/producer-app-public/producer/8b5d58db-995c-4f9f-88fb-30614a17f377", "https://storage.googleapis.com/producer-app-public/producer/dcad3c80-1b11-4b53-a291-582b54c662dd"],
-    tourURL: "https://olgaabuh1.github.io/Melior/",
-    descRU: "Элегантный интерьер, вдохновленный глубокими винными оттенками и эстетикой ар-деко.",
-    descEN: "Elegant interior inspired by deep wine tones and Art Deco aesthetics."
-  },
-  {
-    id: 'authentic-loft-office',
-    titleRU: 'Лофт офис',
-    titleEN: 'Loft Office',
-    image: "https://storage.googleapis.com/producer-app-public/producer/cfedf59d-b0c9-45ea-b86b-8c182c328194",
-    images: ["https://storage.googleapis.com/producer-app-public/producer/cfedf59d-b0c9-45ea-b86b-8c182c328194", "https://storage.googleapis.com/producer-app-public/producer/9217f68a-8af3-4e76-be6e-9cd90897a5ec"],
-    conceptPDF: "https://drive.google.com/file/d/1VKJc4B1KjkiWobqHVSSY6fFIG_m192zv/view?usp=sharing",
-    tourURL: "https://olgaabuh1.github.io/Olimpic_office/"
-  }
-];
-
 export default function App() {
-  const [lang, setLang] = useState('RU');
-  const [activeProject, setActiveProject] = useState(null);
+  const [lang, setLang] = useState<'RU' | 'EN'>('RU');
   const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const t = translations[lang];
 
   const hour = new Date().getHours();
-  const theme = 
-    hour >= 5 && hour < 10 ? { bg: "bg-[#95a6bb]", img: "https://storage.googleapis.com/producer-app-public/producer/87495dc4-ce9b-4541-b793-eeade58fb829" } :
-    hour >= 10 && hour < 17 ? { bg: "bg-[#5b8fbc]", img: "https://storage.googleapis.com/producer-app-public/producer/90de8fe9-973c-4024-8549-0723b1c4a8b9" } :
-    hour >= 17 && hour < 21 ? { bg: "bg-[#fee2e2]", img: "https://storage.googleapis.com/producer-app-public/producer/ee083db0-7b32-4806-887c-88866b8b3b33" } :
-    { bg: "bg-[#0f172a]", img: "https://storage.googleapis.com/producer-app-public/producer/97c1c5fe-1509-440a-82ad-eba3cf75b854" };
-
   const isNight = hour >= 21 || hour < 5;
+  const theme = {
+    bg: hour >= 5 && hour < 10 ? 'bg-[#95a6bb]' : hour >= 10 && hour < 17 ? 'bg-[#5b8fbc]' : hour >= 17 && hour < 21 ? 'bg-[#fee2e2]' : 'bg-[#0f172a]',
+    img: hour >= 5 && hour < 10 ? "https://storage.googleapis.com/producer-app-public/producer/87495dc4-ce9b-4541-b793-eeade58fb829" :
+         hour >= 10 && hour < 17 ? "https://storage.googleapis.com/producer-app-public/producer/90de8fe9-973c-4024-8549-0723b1c4a8b9" :
+         "https://storage.googleapis.com/producer-app-public/producer/ee083db0-7b32-4806-887c-88866b8b3b33" :
+         "https://storage.googleapis.com/producer-app-public/producer/97c1c5fe-1509-440a-82ad-eba3cf75b854"
+  };
 
   return (
-    <div className={`min-h-screen ${theme.bg} ${isNight ? 'text-white' : 'text-slate-900'} transition-all duration-1000 font-light overflow-x-hidden`}>
+    <div className={`min-h-screen ${theme.bg} ${isNight ? 'text-white' : 'text-black'} antialiased selection:bg-black selection:text-white`}>
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;700;900&display=swap" rel="stylesheet" />
       <style>{`
-        @keyframes v-scroll { 0% { transform: translateY(0); } 100% { transform: translateY(-50%); } }
-        .animate-v-scroll { animation: v-scroll 45s linear infinite; }
-        .animate-v-scroll:hover { animation-play-state: paused; }
+        body { font-family: 'Inter', sans-serif; margin: 0; }
+        .nav-link { letter-spacing: 0.25em; text-transform: uppercase; font-size: 11px; font-weight: 500; }
+        .hero-title { line-height: 0.8; letter-spacing: -0.04em; }
       `}</style>
-
-      <audio ref={audioRef} src="https://storage.googleapis.com/producer-app-public/clips/3be82d58-11e9-4390-974b-5f36fc84a7a7.m4a" loop crossOrigin="anonymous" />
       
-      {/* HEADER */}
-      <nav className="sticky top-0 z-[100] flex justify-between items-center px-6 lg:px-10 py-6 border-b border-current/10 backdrop-blur-xl">
-        <img src="https://storage.googleapis.com/producer-app-public/producer/9a9edc8e-efa4-489f-add7-df602feaf4d7" alt="Logo" className={`h-10 ${isNight ? 'invert' : ''}`} />
-        <div className="hidden lg:flex gap-8 text-[10px] uppercase tracking-[0.3em]">
-          {t.nav.map(item => <button key={item} className="hover:opacity-40 transition-opacity">{item}</button>)}
+      <audio ref={audioRef} loop src="https://storage.googleapis.com/producer-app-public/clips/3be82d58-11e9-4390-974b-5f36fc84a7a7.m4a" crossOrigin="anonymous" />
+
+      {/* Шапка (Навигация) */}
+      <nav className={`fixed top-0 w-full z-50 backdrop-blur-xl border-b ${isNight ? 'border-white/10' : 'border-black/5'} px-10 py-6 flex justify-between items-center`}>
+        <img 
+          src="https://storage.googleapis.com/producer-app-public/producer/9a9edc8e-efa4-489f-add7-df602feaf4d7" 
+          className={`h-12 w-auto ${isNight ? 'invert' : ''}`} // Лого крупнее и подстраивается под время
+          alt="Logo" 
+        />
+        <div className="hidden lg:flex gap-10">
+          {t.nav.map((item, i) => (
+            <span key={i} className="nav-link cursor-pointer hover:opacity-50 transition-opacity">{item}</span>
+          ))}
         </div>
-        <button onClick={() => setLang(lang === 'RU' ? 'EN' : 'RU')} className="text-[10px] font-bold border px-3 py-1 rounded-full">{lang}</button>
+        <button onClick={() => setLang(lang === 'RU' ? 'EN' : 'RU')} className="text-[10px] border border-current px-4 py-1 rounded-full font-bold uppercase tracking-widest">{lang}</button>
       </nav>
 
-      {/* HERO */}
-      <section className="relative h-[90vh] flex flex-col justify-end overflow-hidden">
-        <img src={theme.img} className="absolute inset-0 w-full h-full object-cover" alt="Hero" />
-        <div className="absolute inset-0 bg-black/30"></div>
-        <div className="relative z-10 px-6 lg:px-16 pb-20 text-white">
-           <h1 className="text-[15vw] lg:text-[10vw] leading-[0.8] font-extralight tracking-tighter uppercase mb-10">
-             {t.heroTitleTop}<br/><span className="opacity-60">{t.heroTitleBottom}</span>
-           </h1>
-           <div className="flex justify-between items-end">
-             <a href="https://t.me/Ola1ABU" target="_blank" className="bg-white text-black px-12 py-5 rounded-full text-[10px] uppercase font-bold tracking-widest">Contact</a>
-             <div className="flex gap-12 text-right">
-                {t.stats.map(s => <div key={s.label}><div className="text-5xl font-extralight">{s.value}</div><div className="text-[8px] tracking-widest opacity-50">{s.label}</div></div>)}
-             </div>
-           </div>
-        </div>
-      </section>
-
-      {/* PHILOSOPHY */}
-      <section className="py-32 px-6 text-center max-w-5xl mx-auto">
-        <h2 className="text-3xl lg:text-5xl uppercase leading-tight tracking-tight opacity-90">{t.philosophy}</h2>
-      </section>
-
-      {/* PORTFOLIO SECTION */}
-      <section className="px-6 lg:px-10 grid lg:grid-cols-12 gap-8">
-        <div className="lg:col-span-8 bg-black/5 rounded-[50px] h-[700px] overflow-hidden relative border border-current/5">
-           <div className="animate-v-scroll p-8 flex flex-col gap-8">
-             {[...PROJECTS, ...PROJECTS].map((p, i) => (
-               <div key={i} className="relative h-[450px] rounded-[40px] overflow-hidden group cursor-pointer" onClick={() => setActiveProject(p)}>
-                 <img src={p.image} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000" alt="Work" />
-                 <div className="absolute bottom-10 left-10 text-white">
-                   <h4 className="text-3xl font-light uppercase">{lang === 'RU' ? p.titleRU : p.titleEN}</h4>
-                   <p className="text-[10px] tracking-widest opacity-0 group-hover:opacity-100 transition-all">{t.explore}</p>
-                 </div>
-               </div>
-             ))}
-           </div>
-        </div>
-        <div className="lg:col-span-4 flex flex-col gap-6">
-          <div className="p-10 rounded-[50px] bg-white/5 border border-current/10 flex-1">
-            <h3 className="text-xl uppercase tracking-widest mb-6">{t.portfolioTitle}</h3>
-            <p className="text-[11px] uppercase tracking-widest opacity-50 leading-relaxed">{t.portfolioDesc}</p>
-          </div>
-          <div className="p-10 rounded-[50px] bg-white/5 border border-current/10 flex-1">
-            <h3 className="text-xl uppercase tracking-widest mb-6">{t.pricingTitle}</h3>
-            {t.pricingPlans.map(p => (
-              <div key={p.name} className="flex justify-between py-4 border-b border-current/5">
-                <span className="text-[10px] tracking-widest uppercase">{p.name}</span>
-                <span className="text-[10px] font-bold">{p.price}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ABOUT ME */}
-      <section className="px-6 lg:px-10 mt-32">
-        <div className="bg-[#b4b8bf] text-black rounded-[60px] p-12 lg:p-24 flex flex-col lg:grid lg:grid-cols-12 gap-16 items-center">
-          <div className="lg:col-span-8">
-            <h2 className="text-7xl lg:text-9xl font-black uppercase tracking-tighter mb-12 leading-none">{t.whyUs}</h2>
-            <p className="text-2xl font-light uppercase mb-8">{lang === 'RU' ? 'Ольга Абу Хейба — Профессиональный дизайнер.' : 'Olga Abu Haibeh — Professional designer.'}</p>
-            <div className="grid md:grid-cols-2 gap-10 text-[11px] tracking-[0.2em] uppercase opacity-70 leading-relaxed">
-              <p>Создаю пространства, где эстетика встречается с инженерной точностью.</p>
-              <p>Работаю по всему миру, привнося уникальность в каждый проект.</p>
+      {/* Главный экран */}
+      <section className="relative h-screen flex items-center px-10 lg:px-20 overflow-hidden">
+        {/* Картинка без серого фильтра */}
+        <img src={theme.img} className="absolute inset-0 w-full h-full object-cover z-0 opacity-100" alt="Hero" />
+        <div className={`absolute inset-0 z-10 ${isNight ? 'bg-black/40' : 'bg-white/10'}`} />
+        
+        <div className={`relative z-20 w-full ${isNight ? 'text-white' : 'text-white' /* Текст на картинке всегда белый для контраста */}`}>
+          <p className="text-[10px] uppercase tracking-[0.5em] mb-6 opacity-80 font-bold">{t.heroSub}</p>
+          <h1 className="hero-title text-[15vw] lg:text-[11vw] font-light uppercase">
+            {t.heroTitleTop}<br/><span className="ml-[10vw] font-black">{t.heroTitleBottom}</span>
+          </h1>
+          
+          <div className="mt-20 flex justify-between items-end w-full">
+            <div className="flex gap-16 lg:gap-24">
+              {t.stats.map((s, i) => (
+                <div key={i}>
+                  <div className="text-6xl lg:text-8xl font-thin tracking-tighter leading-none">{s.value}</div>
+                  <div className="text-[9px] tracking-[0.4em] opacity-60 uppercase font-bold mt-2">{s.label}</div>
+                </div>
+              ))}
             </div>
-            <a href="https://t.me/Ola1ABU" target="_blank" className="inline-block mt-12 bg-black text-white px-12 py-5 rounded-full text-[10px] font-bold uppercase tracking-widest">Connect</a>
-          </div>
-          <div className="lg:col-span-4 aspect-[3/4] w-full rounded-[40px] overflow-hidden shadow-2xl">
-            <img src="https://storage.googleapis.com/producer-app-public/producer/6c4aa510-08b0-4299-b51b-0c8fb188ccac" className="w-full h-full object-cover" alt="Me" />
+            <a href="https://t.me/Ola1ABU" target="_blank" className="hidden lg:block bg-white text-black px-12 py-5 rounded-full text-[10px] font-black tracking-widest uppercase hover:bg-neutral-200 transition-all shadow-2xl mb-4">
+               {t.contactBtn}
+            </a>
           </div>
         </div>
       </section>
 
-      {/* MODAL WINDOW */}
-      {activeProject && (
-        <div className="fixed inset-0 z-[1000] bg-black/95 backdrop-blur-3xl overflow-y-auto p-6 lg:p-20">
-          <div className="max-w-6xl mx-auto">
-            <button onClick={() => setActiveProject(null)} className="text-white mb-10 flex items-center gap-2 text-[10px] tracking-widest uppercase opacity-50 hover:opacity-100 transition-opacity"><X size={16}/> Close</button>
-            <h2 className="text-5xl text-white font-extralight uppercase tracking-tighter mb-10">{lang === 'RU' ? activeProject.titleRU : activeProject.titleEN}</h2>
-            <div className="flex flex-wrap gap-6 mb-16">
-              {activeProject.tourURL && <a href={activeProject.tourURL} className="bg-white text-black px-8 py-3 rounded-full text-[9px] font-bold uppercase tracking-widest">3D TOUR</a>}
-              {activeProject.conceptPDF && <a href={activeProject.conceptPDF} className="border border-white/20 text-white px-8 py-3 rounded-full text-[9px] font-bold uppercase tracking-widest">CONCEPT</a>}
-            </div>
-            <div className="grid gap-6">
-              {activeProject.images.map(img => <img key={img} src={img} className="w-full rounded-3xl" alt="Interior" />)}
-            </div>
-          </div>
+      {/* Обо мне (улучшенный блок) */}
+      <section className="py-40 px-10 lg:px-20 max-w-7xl mx-auto flex flex-col lg:flex-row gap-20 items-center">
+        <div className="lg:w-1/2 aspect-[4/5] rounded-[50px] overflow-hidden shadow-2xl border-4 border-current/10 relative group">
+          <img src="https://storage.googleapis.com/producer-app-public/producer/6c4aa510-08b0-4299-b51b-0c8fb188ccac" className="w-full h-full object-cover" alt="Olga" />
         </div>
-      )}
+        <div className="lg:w-1/2">
+           <h2 className="text-8xl lg:text-9xl font-black uppercase tracking-tighter mb-12 leading-none">{t.aboutTitle}</h2>
+           <p className="text-xl lg:text-3xl font-light uppercase tracking-tight mb-16 leading-tight opacity-80 italic">{t.aboutText}</p>
+           <a href="https://t.me/Ola1ABU" target="_blank" className="inline-block bg-current text-white invert px-12 py-5 rounded-full text-[10px] font-black tracking-[0.4em] uppercase shadow-xl">
+             {t.contactBtn}
+           </a>
+        </div>
+      </section>
 
-      {/* FOOTER */}
-      <footer className="mt-32 py-12 text-center opacity-20 text-[8px] tracking-[0.5em] uppercase">
-        © {new Date().getFullYear()} Olga Abu Haibeh / Built with Producer
-      </footer>
+      {/* Звук */}
+      <button onClick={() => { if(audioRef.current){ isPlaying ? audioRef.current.pause() : audioRef.current.play(); setIsPlaying(!isPlaying); } }}
+        className="fixed bottom-10 right-10 z-[60] p-6 rounded-full bg-white/10 backdrop-blur-3xl border border-white/20 flex items-center gap-4 group">
+        {isPlaying ? <Volume2 size={20} className="text-white" /> : <VolumeX size={20} className="text-white" />}
+        <span className={`text-[10px] font-bold tracking-widest transition-all ${isPlaying ? 'w-24 opacity-100' : 'w-0 opacity-0'} overflow-hidden whitespace-nowrap text-white`}>ON AIR</span>
+      </button>
     </div>
   );
 }
