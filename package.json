@@ -1,35 +1,30 @@
 {
-  "name": "interior-portfolio",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "@tailwindcss/postcss": "^4.2.4",
-    "autoprefixer": "^10.5.0",
-    "lucide-react": "^1.14.0",
-    "postcss": "^8.5.13",
-    "react": "^19.2.5",
-    "react-dom": "^19.2.5",
-    "tailwindcss": "^4.2.4"
-  },
-  "devDependencies": {
-    "@eslint/js": "^10.0.1",
-    "@types/node": "^24.12.2",
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.1",
-    "eslint": "^10.2.1",
-    "eslint-plugin-react-hooks": "^7.1.1",
-    "eslint-plugin-react-refresh": "^0.5.2",
-    "globals": "^17.5.0",
-    "typescript": "~6.0.2",
-    "typescript-eslint": "^8.58.2",
-    "vite": "^8.0.10"
-  }
-}
+2  "name": "interior-portfolio",
+3  "private": true,
+4  "version": "1.0.0",
+5  "type": "module",
+6  "scripts": {
+7    "dev": "vite",
+8    "build": "tsc && vite build",
+9    "preview": "vite preview"
+10  },
+11  "dependencies": {
+12    "react": "^18.2.0",
+13    "react-dom": "^18.2.0",
+14    "lucide-react": "^0.284.0",
+15    "framer-motion": "^10.16.4",
+16    "clsx": "^2.0.0",
+17    "tailwind-merge": "^1.14.0"
+18  },
+19  "devDependencies": {
+20    "@types/react": "^18.2.15",
+21    "@types/react-dom": "^18.2.7",
+22    "@vitejs/plugin-react": "^4.0.3",
+23    "autoprefixer": "^10.4.14",
+24    "postcss": "^8.4.27",
+25    "tailwindcss": "^3.3.3",
+26    "typescript": "^5.0.2",
+27    "vite": "^4.4.5"
+28  }
+29}
+30
