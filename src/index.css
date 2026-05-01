@@ -1,15 +1,1 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-body {
-  margin: 0;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: #000; /* Резервный фон */
-}
-
-/* Убираем скроллбар для эстетики */
-::-webkit-scrollbar {
-  display: none;
-}
+@import "tailwindcss";
