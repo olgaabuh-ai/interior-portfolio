@@ -2,21 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-@keyframes v-scroll { 
-  0% { transform: translateY(0); } 
-  100% { transform: translateY(-50%); } 
-}
-
-.animate-v-scroll { 
-  animation: v-scroll 40s linear infinite; 
-}
-
-.animate-v-scroll:hover { 
-  animation-play-state: paused; 
-}
-
 body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #000; /* Резервный фон */
+}
+
+/* Убираем скроллбар для эстетики */
+::-webkit-scrollbar {
+  display: none;
 }
